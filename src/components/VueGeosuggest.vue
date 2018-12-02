@@ -12,26 +12,10 @@
     <ul>
       <li>
         <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
+          href="https://www.npmjs.com/package/vue-cli-plugin-component"
           target="_blank"
           rel="noopener"
-          >babel</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          rel="noopener"
-          >eslint</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-jest"
-          target="_blank"
-          rel="noopener"
-          >unit-jest</a
+          >component</a
         >
       </li>
     </ul>
@@ -96,7 +80,7 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "VueGeosuggest",
   props: {
     msg: String
   }

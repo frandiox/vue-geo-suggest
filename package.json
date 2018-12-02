@@ -1,11 +1,13 @@
 {
   "name": "vue-geosuggest",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve ./example/main.js --open",
+    "build": "vue-cli-service build --name vue-geosuggest --entry ./src/index.js --target lib",
     "lint": "vue-cli-service lint",
+    "doc:build": "npx vuedoc.md --section API --output ./README.md ./src/components/VueGeosuggest.vue",
+    "prepublishOnly": "npm run lint && npm run build && npm run doc:build",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
@@ -18,17 +20,31 @@
     "@vue/cli-service": "^3.0.5",
     "@vue/eslint-config-prettier": "^4.0.0",
     "@vue/test-utils": "^1.0.0-beta.20",
+    "@vuedoc/md": "^1.5.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
+    "component-fixture": "^0.3.0",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
     "lint-staged": "^7.2.2",
+    "vue-cli-plugin-component": "^1.8.6",
     "vue-template-compiler": "^2.5.17"
   },
+  "files": [
+    "dist/*.css",
+    "dist/*.map",
+    "dist/*.js",
+    "src/*"
+  ],
   "gitHooks": {
     "pre-commit": "lint-staged"
   },
+  "keywords": [
+    "vue",
+    "component"
+  ],
+  "license": "MIT",
   "lint-staged": {
     "*.js": [
       "vue-cli-service lint",
@@ -38,5 +54,7 @@
       "vue-cli-service lint",
       "git add"
     ]
-  }
+  },
+  "main": "dist/vue-geosuggest.umd.js",
+  "module": "dist/vue-geosuggest.common.min.js"
 }
