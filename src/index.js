@@ -1,3 +1,2 @@
-import VueGeosuggest from "./components/VueGeosuggest.vue";
-
-export { VueGeosuggest };
+export { default as GeoSuggest } from './geo-suggest.vue'
+export { default as loadGmaps } from './load-gmaps.js'
