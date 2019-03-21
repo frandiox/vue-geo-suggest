@@ -1,35 +1,39 @@
 {
-  "name": "vue-geosuggest",
-  "version": "0.1.0",
-  "private": false,
+  "name": "vue-geo-suggest",
+  "version": "0.0.0",
+  "description": "Renderless Vue component for finding addresses using Google Places API",
+  "author": "Fran Dios <me@frandiox.com>",
+  "license": "MIT",
+  "main": "dist/geo-suggest.umd.js",
+  "module": "dist/geo-suggest.common.min.js",
   "scripts": {
-    "serve": "vue-cli-service serve ./example/main.js --open",
-    "build": "vue-cli-service build --name vue-geosuggest --entry ./src/index.js --target lib",
+    "dev": "vue-cli-service serve ./example/main.js --open --port 8030",
+    "build": "vue-cli-service build --name vue-geo-suggest --entry ./src/index.js --target lib",
     "lint": "vue-cli-service lint",
-    "doc:build": "npx vuedoc.md --section API --output ./README.md ./src/components/VueGeosuggest.vue",
+    "doc:build": "vuedoc.md --section API --output ./README.md ./src/geo-suggest.vue",
     "prepublishOnly": "npm run lint && npm run build && npm run doc:build",
     "test:unit": "vue-cli-service test:unit"
   },
-  "dependencies": {
-    "vue": "^2.5.17"
-  },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.5",
-    "@vue/cli-plugin-eslint": "^3.0.5",
-    "@vue/cli-plugin-unit-jest": "^3.0.5",
-    "@vue/cli-service": "^3.0.5",
-    "@vue/eslint-config-prettier": "^4.0.0",
-    "@vue/test-utils": "^1.0.0-beta.20",
-    "@vuedoc/md": "^1.5.0",
+    "@vue/cli-plugin-babel": "3.5.x",
+    "@vue/cli-plugin-eslint": "3.5.x",
+    "@vue/cli-plugin-unit-jest": "3.5.x",
+    "@vue/cli-service": "3.5.x",
+    "@vue/eslint-config-prettier": "4.0.x",
+    "@vue/test-utils": "1.0.0-beta.29",
+    "@vuedoc/md": "1.6.x",
     "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.6.0",
-    "component-fixture": "^0.3.0",
-    "eslint": "^5.8.0",
-    "eslint-plugin-vue": "^5.0.0-0",
-    "lint-staged": "^7.2.2",
-    "vue-cli-plugin-component": "^1.8.6",
-    "vue-template-compiler": "^2.5.17"
+    "babel-eslint": "10.0.x",
+    "babel-jest": "24.5.x",
+    "eslint": "5.15.x",
+    "eslint-plugin-vue": "5.2.x",
+    "lint-staged": "8.1.x",
+    "lodash.debounce": "4.0.x",
+    "material-design-icons-iconfont": "^4.0.5",
+    "vue": "2.6.x",
+    "vue-cli-plugin-component": "1.10.x",
+    "vue-template-compiler": "2.6.x",
+    "vuetify": "1.5.x"
   },
   "files": [
     "dist/*.css",
@@ -42,9 +46,14 @@
   },
   "keywords": [
     "vue",
-    "component"
+    "component",
+    "gmaps",
+    "maps",
+    "google",
+    "places",
+    "geosuggest",
+    "suggest"
   ],
-  "license": "MIT",
   "lint-staged": {
     "*.js": [
       "vue-cli-service lint",
@@ -54,7 +63,5 @@
       "vue-cli-service lint",
       "git add"
     ]
-  },
-  "main": "dist/vue-geosuggest.umd.js",
-  "module": "dist/vue-geosuggest.common.min.js"
+  }
 }
