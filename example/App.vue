@@ -1,12 +1,12 @@
 <template>
-  <div id="app">
-    <VApp class="wrapper">
+  <VApp id="app">
+    <div class="wrapper">
       <GeoSuggest
         v-slot="{ suggests, loading }"
         :debounce="debounce"
         :search="searchInput"
         :suggest="selectedSuggest"
-        @geocoded="geocoded = $event"
+        @geocoded="address = { ...$event.normalizedAddress }"
         @service-error="searchInput = ''"
       >
         <VCombobox
@@ -21,14 +21,16 @@
         />
       </GeoSuggest>
 
-      <div>
-        Selected:
+      <div class="address">
+        <VTextField label="Address 1" :value="address.streetAddress1" />
+        <VTextField label="Address 2" :value="address.streetAddress2" />
+        <VTextField label="Region" :value="address.region" />
+        <VTextField label="City" :value="address.city" />
+        <VTextField label="Postal Code" :value="address.postalCode" />
+        <VTextField label="Country" :value="address.countryName" />
       </div>
-      <div>
-        {{ geocoded }}
-      </div>
-    </VApp>
-  </div>
+    </div>
+  </VApp>
 </template>
 
 <script>
@@ -39,10 +41,10 @@ export default {
   components: { GeoSuggest },
   data() {
     return {
-      debounce: fn => debounce(fn, 200), // Optional delay in ms
-      selectedSuggest: null, // Suggest selected from dropdown
-      searchInput: '', // Search text
-      geocoded: null, // Information about the selected place
+      debounce: fn => debounce(fn, 200),
+      selectedSuggest: null,
+      searchInput: '',
+      address: {},
     }
   },
   mounted() {
@@ -59,13 +61,23 @@ export default {
   text-align: center;
   color: #2c3e50;
   background-color: rgb(250, 250, 250);
-  display: flex;
-  justify-content: center;
 }
 
 .wrapper {
   max-width: 600px;
   width: 100%;
   padding: 24px;
+  margin: 0 auto;
+}
+
+.address {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 6px -10px;
+}
+
+.address > * {
+  width: 256px;
+  padding: 10px;
 }
 </style>

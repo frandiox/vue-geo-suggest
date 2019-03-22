@@ -177,7 +177,7 @@ export default {
             this.sessionToken = new this.gmaps.places.AutocompleteSessionToken()
             this.onSuggestGeocoded(suggestToGeocode, gmaps)
           } else {
-            this.$emit('service-error', status)
+            this.$emit('service-error', { status })
           }
         })
       } else {
