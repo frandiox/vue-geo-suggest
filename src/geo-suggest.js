@@ -1,4 +1,3 @@
-<script>
 const extract = (string, regex) =>
   (((string || '').match(regex) || [])[1] || '').replace(
     /&#(\d+);/g,
@@ -298,4 +297,3 @@ export default {
     })
   },
 }
-</script>
