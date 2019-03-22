@@ -40,6 +40,10 @@ export default {
       type: [String, Array],
       default: undefined,
     },
+    placeDetailFields: {
+      type: Array,
+      default: undefined,
+    },
     getSuggestLabel: {
       type: Function,
       default: undefined,
@@ -170,6 +174,7 @@ export default {
         const options = {
           placeId: suggestToGeocode.placeId,
           sessionToken: this.sessionToken,
+          fields: this.placeDetailFields,
         }
 
         this.placesService.getDetails(options, (gmaps, status) => {
@@ -198,11 +203,11 @@ export default {
       }
     },
     onSuggestGeocoded(suggestToGeocode, gmaps) {
-      const location = gmaps.geometry.location
+      const location = (gmaps.geometry || {}).location
       const suggest = {
         ...suggestToGeocode,
         gmaps,
-        location: {
+        location: location && {
           lat: location.lat(),
           lng: location.lng(),
         },
@@ -212,7 +217,7 @@ export default {
     },
     extendGeocodedSuggest(suggest) {
       // Provide address_comopnents in a more handy format
-      const map = suggest.gmaps.address_components.reduce(
+      const map = (suggest.gmaps.address_components || []).reduce(
         (acc1, comp) => ({
           ...acc1,
           ...comp.types.reduce(
@@ -248,7 +253,7 @@ export default {
         if (
           map.route &&
           !['street_address', 'route'].some(type =>
-            suggest.gmaps.types.includes(type)
+            (suggest.gmaps.types || []).includes(type)
           )
         ) {
           // Smaller level than street (maybe public place), best effort guessing
