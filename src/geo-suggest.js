@@ -107,14 +107,14 @@ export default {
       return true
     },
     searchSuggests() {
-      if (!this.gmaps && !this.init()) {
-        // Not ready, skip
-        return
-      }
-
       if (!this.search) {
         // Empty suggest list
         this.updateSuggests()
+        return
+      }
+
+      if (!this.gmaps && !this.init()) {
+        // Not ready, skip
         return
       }
 
@@ -122,7 +122,7 @@ export default {
         (this.minLength && this.search.length < this.minLength) ||
         !this.autocompleteService
       ) {
-        // Skip short searchs
+        // Skip short searches
         return
       }
 

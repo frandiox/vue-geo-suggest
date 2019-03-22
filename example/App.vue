@@ -5,7 +5,7 @@
         v-slot="{ suggests, loading }"
         :debounce="debounce"
         :search="searchInput"
-        :suggest="selectedSuggest"
+        :suggest="selectedSuggest || null"
         @geocoded="address = { ...$event.normalizedAddress }"
         @service-error="searchInput = ''"
       >
