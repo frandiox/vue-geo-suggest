@@ -15,6 +15,14 @@ npm install vue-geo-suggest
 yarn add vue-geo-suggest
 ```
 
+Apart from that, an API key is necessary for using Google Places API. From the [Google Developer Console](https://console.developers.google.com)'s API Manager Dashboard, enable the following APIs:
+
+- [Google Maps Geocoding API](https://developers.google.com/maps/documentation/geocoding/start).
+- [Google Places API Web Service](https://developers.google.com/places/web-service/).
+- [Google Maps Javascript API](https://developers.google.com/maps/documentation/javascript/).
+
+Generate an API key and provide it to `loadGmaps` utility.
+
 ## Usage
 
 ```HTML
@@ -49,12 +57,15 @@ export default {
     }
   },
   mounted() {
+    // Load API dependencies globally. This can be called any time
+    // before using GeoSuggest component.
+    // i.e. in `main.js` or directly in the view where is necessary.
     loadGmaps(process.env.VUE_APP_GCP_PLACES_API_KEY)
   },
 }
 ```
 
-Example with Vuetify:
+Example with **Vuetify**:
 
 ```HTML
 <GeoSuggest
