@@ -7,7 +7,7 @@
         :search="searchInput"
         :suggestion="selectedSuggestion || null"
         @geocoded="address = { ...$event.normalizedAddress }"
-        @service-error="searchInput = ''"
+        @error="searchInput = ''"
       >
         <VCombobox
           v-model="selectedSuggestion"

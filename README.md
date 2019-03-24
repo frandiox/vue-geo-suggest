@@ -1,8 +1,8 @@
 # vue-geo-suggest
 
-[![GitHub open issues](https://img.shields.io/github/issues/Fran Dios/vue-geo-suggest.svg?maxAge=2592000)](https://github.com/Fran Dios/vue-geo-suggest/issues)
+[![GitHub open issues](https://img.shields.io/github/issues/frandiox/vue-geo-suggest.svg?maxAge=2592000)](https://github.com/frandiox/vue-geo-suggest/issues)
 [![Npm version](https://img.shields.io/npm/v/vue-geo-suggest.svg?maxAge=2592000)](https://www.npmjs.com/package/vue-geo-suggest)
-[![MIT License](https://img.shields.io/github/license/Fran Dios/vue-geo-suggest.svg)](https://github.com/Fran Dios/vue-geo-suggest/blob/master/LICENSE)
+[![MIT License](https://img.shields.io/github/license/frandiox/vue-geo-suggest.svg)](https://github.com/frandiox/vue-geo-suggest/blob/master/LICENSE)
 
 ## Usage
 
@@ -66,87 +66,114 @@ Example with Vuetify:
 
 ## API
 
-### geo-suggest
+### geo-suggest 
 
-#### props
+#### props 
 
-- `search` **_String_** (_optional_) `default: undefined`
+- `search` ***String*** (*optional*) 
 
-- `suggest` **_Object_** (_optional_) `default: undefined`
+  Search string to filter places. A list of place suggestions
+  with basic details will be provided based on this text.
+  Example: "400 Broadway". 
 
-- `min-length` **_Number_** (_optional_) `default: 3`
+- `min-length` ***Number*** (*optional*) `default: 3` 
 
-- `debounce` **_Function_** (_optional_) `default: undefined`
+  Minimum length of the search string to trigger a request. 
 
-- `location` **_Object_** (_optional_) `default: undefined`
+- `suggestion` ***Object*** (*optional*) 
 
-- `radius` **_Number_** (_optional_) `default: undefined`
+  Selected suggestion among all the provided values
+  to show extended details about the place. This prop must be
+  one of the elements inside the provided `suggestions` list.
+  Contains `description`, `placeId`, and `matchedSubstrings`. 
 
-- `bounds` **_Object_** (_optional_) `default: undefined`
+- `get-suggestion-label` ***Function*** (*optional*) 
 
-- `country` **_String|Array_** (_optional_) `default: undefined`
+- `skip-suggestion` ***Function*** (*optional*) 
 
-- `get-suggest-label` **_Function_** (_optional_) `default: undefined`
+- `debounce` ***Function*** (*optional*) 
 
-- `skip-suggest` **_Function_** (_optional_) `default: undefined`
+  Called whenever the `search` prop changes
+  with another function as a single parameter that performs the actual request.
+  Useful for debouncing requests with a custom query delay. Works directly with
+  [`lodash.debounce`](https://www.npmjs.com/package/lodash.debounce):
+  `:debounce="fn => lodashDebounce(fn, msDelay)"` 
 
-- `google-maps` **_Object_** (_optional_) `default: undefined`
+- `location` ***Object*** (*optional*) 
 
-#### data
+  Allows localizing the resulting suggestions.
+  See [`google.maps.LatLng`](https://developers.google.com/maps/documentation/javascript/reference#LatLng). 
 
-- `loading`
+- `radius` ***Number*** (*optional*) 
 
-**initial value:** `false`
+  Radius in meters that defines the valid area around the provided location. Must be used with `location` prop. 
 
-- `gmaps`
+- `bounds` ***Object*** (*optional*) 
 
-**initial value:** `null`
+  Bounds for biasing the suggestions. `location` and `radius` are ignored when using this.
+  See [`LatLngBounds`](https://developers.google.com/maps/documentation/javascript/reference?csw=1#LatLngBounds). 
 
-- `autocompleteService`
+- `country` ***String|Array*** (*optional*) 
 
-**initial value:** `null`
+  Restricts predictions to the specified countries (ISO 3166-1 Alpha-2 country code, case insensitive)
+  Example: `'es'`; `['it', 'fr']`. 
 
-- `placesService`
+- `place-detail-fields` ***Array*** (*optional*) 
 
-**initial value:** `null`
+  List of [fields](https://developers.google.com/maps/documentation/javascript/reference/places-service#PlaceDetailsRequest.fields)
+  that should be returned by Google Places API. Useful to limited the size of the response and [optimize billing](https://developers.google.com/maps/billing/understanding-cost-of-use#data-skus).
+  All the fields are returned by default. 
 
-- `sessionToken`
+- `google-maps` ***Object*** (*optional*) 
 
-**initial value:** `null`
+  Google Maps object to use in case it is not loaded globally. 
 
-- `geocoder`
+#### data 
 
-**initial value:** `null`
+- `loading` 
 
-- `suggests`
+  `true` when a request to Google Places API is pending.
+  This is provided in the default scoped slot. 
 
-**initial value:** `[object Object]`
+**initial value:** `false` 
 
-#### computed properties
+- `suggestions` 
 
-- `debouncedSearchSuggests`
+  List of suggestions returned by Google Places API based on `search`.
+  Each element is an object containing `description`, `placeId` and `matchedSubstrings`.
+  This is provided in the default scoped slot. 
 
-  **dependencies:** `debounce`, `debounce`, `searchSuggests`, `searchSuggests`
+**initial value:** `[object Object]` 
 
-#### events
+#### events 
 
-- `service-error`
+- `suggestions` 
 
-- `geocoded`
+  Fired when a new list of suggestions is returned by the Google Places API. 
 
-#### methods
+  **arguments:** 
 
-- `init()`
+     - `suggestions` **Array** - List of suggestions. 
 
-- `searchSuggests()`
+- `error` 
 
-- `updateSuggests()`
+  Fired when Google Places API fails. 
 
-- `geocodeSuggest(suggestToGeocode)`
+  **arguments:** 
 
-- `onSuggestGeocoded(suggestToGeocode, gmaps)`
+     - `payload.status` **Object** - The status returned. 
 
-- `extendGeocodedSuggest(suggest)`
+- `geocoded` 
+
+  Fired when the selected suggestion is geocoded and all its details are available. 
+
+  **arguments:** 
+
+     - `payload.description` **String** - Same description string as in the `suggestions` list. 
+     - `payload.location` **Object** - Latitude (`lat`) and longitude (`lng`). 
+     - `payload.gmaps` **Object** - Complete response for this suggestion. See [its structure here](https://developers.google.com/maps/documentation/javascript/reference#GeocoderResult). 
+     - `payload.addressComponentsMap` **Object** - Handy structure that summarizes `gmaps` components. 
+     - `payload.normalizedAddress` **Object** - Extended information based on the API result useful for shipping addresses. 
 
 ## Installation
 
