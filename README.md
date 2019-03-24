@@ -216,7 +216,7 @@ Example with **Vuetify**:
 yarn # Installs dependencies
 yarn dev # Compiles and hot-reloads for development
 yarn build # Compiles and minifies for production
-yarn test # Run tests
 yarn lint # Lints and fixes files
+yarn test:unit # Run tests
 yarn doc:build # Update the API section of README.md
 ```
