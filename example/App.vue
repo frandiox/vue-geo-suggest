@@ -16,6 +16,7 @@
           :items="suggestions"
           item-text="description"
           label="Find my address"
+          browser-autocomplete="new-password"
           no-filter
           clearable
         />
