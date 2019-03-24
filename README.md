@@ -4,6 +4,17 @@
 [![Npm version](https://img.shields.io/npm/v/vue-geo-suggest.svg?maxAge=2592000)](https://www.npmjs.com/package/vue-geo-suggest)
 [![MIT License](https://img.shields.io/github/license/frandiox/vue-geo-suggest.svg)](https://github.com/frandiox/vue-geo-suggest/blob/master/LICENSE)
 
+A small renderless [Vue](https://vuejs.org) for finding addresses using [Google Places API](https://developers.google.com/places/web-service/intro). The component simply provides a list of suggestions and place information as slot props in order to support custom UI. It is easily pluggable to [Vuetify](https://vuetifyjs.com) and other UI components.
+
+This project was originally based on [`react-geosuggest`](https://github.com/ubilabs/react-geosuggest).
+
+## Installation
+
+```
+npm install vue-geo-suggest
+yarn add vue-geo-suggest
+```
+
 ## Usage
 
 ```HTML
@@ -32,8 +43,8 @@ export default {
   components: { GeoSuggest },
   data() {
     return {
-      selectedSuggestion: null, // Selected suggest from dropdown
       searchInput: '', // Search text
+      selectedSuggestion: null, // Selected suggest from dropdown
       address: null, // Information about the selected place
     }
   },
@@ -66,156 +77,118 @@ Example with Vuetify:
 
 ## API
 
-### geo-suggest 
+### geo-suggest
 
-#### props 
+#### props
 
-- `search` ***String*** (*optional*) 
+- `search` **_String_** (_optional_)
 
   Search string to filter places. A list of place suggestions
   with basic details will be provided based on this text.
-  Example: "400 Broadway". 
+  Example: "400 Broadway".
 
-- `min-length` ***Number*** (*optional*) `default: 3` 
+- `min-length` **_Number_** (_optional_) `default: 3`
 
-  Minimum length of the search string to trigger a request. 
+  Minimum length of the search string to trigger a request.
 
-- `suggestion` ***Object*** (*optional*) 
+- `suggestion` **_Object_** (_optional_)
 
   Selected suggestion among all the provided values
   to show extended details about the place. This prop must be
   one of the elements inside the provided `suggestions` list.
-  Contains `description`, `placeId`, and `matchedSubstrings`. 
+  Contains `description`, `placeId`, and `matchedSubstrings`.
 
-- `debounce` ***Function*** (*optional*) 
+- `debounce` **_Function_** (_optional_)
 
   Called whenever the `search` prop changes
   with another function as a single parameter that performs the actual request.
   Useful for debouncing requests with a custom query delay. Works directly with
   [`lodash.debounce`](https://www.npmjs.com/package/lodash.debounce):
-  `:debounce="fn => lodashDebounce(fn, msDelay)"` 
+  `:debounce="fn => lodashDebounce(fn, msDelay)"`
 
-- `location` ***Object*** (*optional*) 
+- `location` **_Object_** (_optional_)
 
   Allows localizing the resulting suggestions.
-  See [`google.maps.LatLng`](https://developers.google.com/maps/documentation/javascript/reference#LatLng). 
+  See [`google.maps.LatLng`](https://developers.google.com/maps/documentation/javascript/reference#LatLng).
 
-- `radius` ***Number*** (*optional*) 
+- `radius` **_Number_** (_optional_)
 
-  Radius in meters that defines the valid area around the provided location. Must be used with `location` prop. 
+  Radius in meters that defines the valid area around the provided location. Must be used with `location` prop.
 
-- `bounds` ***Object*** (*optional*) 
+- `bounds` **_Object_** (_optional_)
 
   Bounds for biasing the suggestions. `location` and `radius` are ignored when using this.
-  See [`LatLngBounds`](https://developers.google.com/maps/documentation/javascript/reference?csw=1#LatLngBounds). 
+  See [`LatLngBounds`](https://developers.google.com/maps/documentation/javascript/reference?csw=1#LatLngBounds).
 
-- `country` ***String|Array*** (*optional*) 
+- `country` **_String|Array_** (_optional_)
 
   Restricts predictions to the specified countries (ISO 3166-1 Alpha-2 country code, case insensitive)
-  Example: `'es'`; `['it', 'fr']`. 
+  Example: `'es'`; `['it', 'fr']`.
 
-- `place-detail-fields` ***Array*** (*optional*) 
+- `place-detail-fields` **_Array_** (_optional_)
 
   List of [fields](https://developers.google.com/maps/documentation/javascript/reference/places-service#PlaceDetailsRequest.fields)
   that should be returned by Google Places API. Useful to limited the size of the response and [optimize billing](https://developers.google.com/maps/billing/understanding-cost-of-use#data-skus).
-  All the fields are returned by default. 
+  All the fields are returned by default.
 
-- `google-maps` ***Object*** (*optional*) 
+- `google-maps` **_Object_** (_optional_)
 
-  Google Maps object to use in case it is not loaded globally. 
+  Google Maps object to use in case it is not loaded globally.
 
-#### data 
+#### data
 
-- `loading` 
+- `loading`
 
   `true` when a request to Google Places API is pending.
-  This is provided in the default scoped slot. 
+  This is provided in the default scoped slot.
 
-**initial value:** `false` 
+**initial value:** `false`
 
-- `suggestions` 
+- `suggestions`
 
   List of suggestions returned by Google Places API based on `search`.
   Each element is an object containing `description`, `placeId` and `matchedSubstrings`.
-  This is provided in the default scoped slot. 
+  This is provided in the default scoped slot.
 
-**initial value:** `[object Object]` 
+**initial value:** `[object Object]`
 
-#### events 
+#### events
 
-- `suggestions` 
+- `suggestions`
 
-  Fired when a new list of suggestions is returned by the Google Places API. 
+  Fired when a new list of suggestions is returned by the Google Places API.
 
-  **arguments:** 
+  **arguments:**
 
-     - `suggestions` **Array** - List of suggestions. 
+  - `suggestions` **Array** - List of suggestions.
 
-- `error` 
+- `error`
 
-  Fired when Google Places API fails. 
+  Fired when Google Places API fails.
 
-  **arguments:** 
+  **arguments:**
 
-     - `payload.status` **Object** - The status returned. 
+  - `payload.status` **Object** - The status returned.
 
-- `geocoded` 
+- `geocoded`
 
-  Fired when the selected suggestion is geocoded and all its details are available. 
+  Fired when the selected suggestion is geocoded and all its details are available.
 
-  **arguments:** 
+  **arguments:**
 
-     - `payload.description` **String** - Same description string as in the `suggestions` list. 
-     - `payload.location` **Object** - Latitude (`lat`) and longitude (`lng`). 
-     - `payload.gmaps` **Object** - Complete response for this suggestion. See [its structure here](https://developers.google.com/maps/documentation/javascript/reference#GeocoderResult). 
-     - `payload.addressComponentsMap` **Object** - Handy structure that summarizes `gmaps` components. 
-     - `payload.normalizedAddress` **Object** - Extended information based on the API result useful for shipping addresses. 
+  - `payload.description` **String** - Same description string as in the `suggestions` list.
+  - `payload.location` **Object** - Latitude (`lat`) and longitude (`lng`).
+  - `payload.gmaps` **Object** - Complete response for this suggestion. See [its structure here](https://developers.google.com/maps/documentation/javascript/reference#GeocoderResult).
+  - `payload.addressComponentsMap` **Object** - Handy structure that summarizes `gmaps` components.
+  - `payload.normalizedAddress` **Object** - Extended information based on the API result useful for shipping addresses.
 
-## Installation
-
-```
-npm install vue-geo-suggest
-yarn add vue-geo-suggest
-```
-
-## Project setup
+## Project setup for contributing
 
 ```
-yarn
-```
-
-### Compiles and hot-reloads for development
-
-```
-yarn dev
-```
-
-### Compiles and minifies for production
-
-```
-yarn build
-```
-
-### Run your tests
-
-```
-yarn test
-```
-
-### Lints and fixes files
-
-```
-yarn lint
-```
-
-### Run your unit tests
-
-```
-yarn test:unit
-```
-
-### Update the API section of README.md with generated documentation
-
-```
-yarn doc:build
+yarn # Installs dependencies
+yarn dev # Compiles and hot-reloads for development
+yarn build # Compiles and minifies for production
+yarn test # Run tests
+yarn lint # Lints and fixes files
+yarn doc:build # Update the API section of README.md
 ```
