@@ -28,10 +28,17 @@ export default {
      * to show extended details about the place. This prop must be
      * one of the elements inside the provided `suggestions` list.
      * Contains `description`, `placeId`, and `matchedSubstrings`.
+     * @type Object
      */
     suggestion: {
-      type: Object,
       required: false,
+      validator(value) {
+        return (
+          (typeof value === 'object' &&
+            typeof value.description === 'string') ||
+          typeof value === 'string'
+        )
+      },
     },
     /**
      * Called whenever the `search` prop changes
@@ -142,7 +149,7 @@ export default {
       this.debouncedSearchSuggestions()
     },
     suggestion(value) {
-      if (value) {
+      if (value && typeof value === 'object') {
         this.geocodeSuggestion(value)
       }
     },
@@ -260,7 +267,7 @@ export default {
         })
       } else {
         const options = {
-          address: suggestionToGeocode.label,
+          address: suggestionToGeocode.description,
           bounds: this.bounds,
           location: this.location,
           componentRestrictions: this.country
