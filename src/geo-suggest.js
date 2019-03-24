@@ -115,42 +115,42 @@ export default {
       /**
        * @private
        */
-      gmaps: null,
+      $_gmaps: null,
       /**
        * @private
        */
-      autocompleteService: null,
+      $_autocompleteService: null,
       /**
        * @private
        */
-      placesService: null,
+      $_placesService: null,
       /**
        * @private
        */
-      sessionToken: null,
+      $_sessionToken: null,
       /**
        * @private
        */
-      geocoder: null,
+      $_geocoder: null,
     }
   },
   computed: {
     /**
      * @private
      */
-    debouncedSearchSuggestions() {
+    $_debouncedSearchSuggestions() {
       return this.debounce
-        ? this.debounce(this.searchSuggestions)
-        : this.searchSuggestions
+        ? this.debounce(this.$_searchSuggestions)
+        : this.$_searchSuggestions
     },
   },
   watch: {
     search() {
-      this.debouncedSearchSuggestions()
+      this.$_debouncedSearchSuggestions()
     },
     suggestion(value) {
       if (value && typeof value === 'object') {
-        this.geocodeSuggestion(value)
+        this.$_geocodeSuggestion(value)
       }
     },
   },
@@ -160,23 +160,23 @@ export default {
      * dependencies. Warns if it's not properly set up.
      * @private
      */
-    init() {
-      if (!this.gmaps) {
+    $_init() {
+      if (!this.$_gmaps) {
         if (this.googleMaps) {
-          this.gmaps = this.googleMaps
+          this.$_gmaps = this.googleMaps
         } else if (!window.google) {
           console.warn('Tried to init GeoSuggest before loading GMaps')
           return false
         } else {
-          this.gmaps = window.google.maps
+          this.$_gmaps = window.google.maps
         }
 
-        this.autocompleteService = new this.gmaps.places.AutocompleteService()
-        this.placesService = new this.gmaps.places.PlacesService(
+        this.$_autocompleteService = new this.$_gmaps.places.AutocompleteService()
+        this.$_placesService = new this.$_gmaps.places.PlacesService(
           document.createElement('div')
         )
-        this.sessionToken = new this.gmaps.places.AutocompleteSessionToken()
-        this.geocoder = new this.gmaps.Geocoder()
+        this.$_sessionToken = new this.$_gmaps.places.AutocompleteSessionToken()
+        this.$_geocoder = new this.$_gmaps.Geocoder()
       }
 
       return true
@@ -185,21 +185,21 @@ export default {
      * Makes a request to the API to get suggestions based on `search`.
      * @private
      */
-    searchSuggestions() {
+    $_searchSuggestions() {
       if (!this.search) {
         // Empty suggestion list
-        this.updateSuggestions()
+        this.$_updateSuggestions()
         return
       }
 
-      if (!this.gmaps && !this.init()) {
+      if (!this.$_gmaps && !this.$_init()) {
         // Not ready, skip
         return
       }
 
       if (
         (this.minLength && this.search.length < this.minLength) ||
-        !this.autocompleteService
+        !this.$_autocompleteService
       ) {
         // Skip short searches
         return
@@ -207,7 +207,7 @@ export default {
 
       const options = {
         input: this.search,
-        sessionToken: this.sessionToken,
+        sessionToken: this.$_sessionToken,
         location: this.location,
         radius: this.radius,
         bounds: this.bounds,
@@ -219,16 +219,19 @@ export default {
 
       this.loading = true
 
-      this.autocompleteService.getPlacePredictions(options, rawSuggestions => {
-        this.loading = false
-        this.updateSuggestions(rawSuggestions || [])
-      })
+      this.$_autocompleteService.getPlacePredictions(
+        options,
+        rawSuggestions => {
+          this.loading = false
+          this.$_updateSuggestions(rawSuggestions || [])
+        }
+      )
     },
     /**
      * Reshapes the resulting list of suggestions from an API call.
      * @private
      */
-    updateSuggestions(rawSuggestions = []) {
+    $_updateSuggestions(rawSuggestions = []) {
       this.suggestions = rawSuggestions.map(suggestion => ({
         placeId: suggestion.place_id,
         description: suggestion.description,
@@ -245,24 +248,24 @@ export default {
      * Requests extra details for a specific suggestion to the API.
      * @private
      */
-    geocodeSuggestion(suggestionToGeocode) {
-      if (!this.geocoder) {
+    $_geocodeSuggestion(suggestionToGeocode) {
+      if (!this.$_geocoder) {
         return
       }
 
-      if (suggestionToGeocode.placeId && this.placesService) {
+      if (suggestionToGeocode.placeId && this.$_placesService) {
         const options = {
           placeId: suggestionToGeocode.placeId,
-          sessionToken: this.sessionToken,
+          sessionToken: this.$_sessionToken,
           fields: this.placeDetailFields,
         }
 
-        this.placesService.getDetails(options, (gmaps, status) => {
-          if (status === this.gmaps.places.PlacesServiceStatus.OK) {
-            this.sessionToken = new this.gmaps.places.AutocompleteSessionToken()
-            this.onSuggestionGeocoded(suggestionToGeocode, gmaps)
+        this.$_placesService.getDetails(options, (gmaps, status) => {
+          if (status === this.$_gmaps.places.PlacesServiceStatus.OK) {
+            this.$_sessionToken = new this.$_gmaps.places.AutocompleteSessionToken()
+            this.$_onSuggestionGeocoded(suggestionToGeocode, gmaps)
           } else {
-            this.onServiceError(status)
+            this.$_onServiceError(status)
           }
         })
       } else {
@@ -275,11 +278,11 @@ export default {
             : undefined,
         }
 
-        this.geocoder.geocode(options, ([gmaps], status) => {
-          if (status === this.gmaps.GeocoderStatus.OK) {
-            this.onSuggestionGeocoded(suggestionToGeocode, gmaps)
+        this.$_geocoder.geocode(options, ([gmaps], status) => {
+          if (status === this.$_gmaps.GeocoderStatus.OK) {
+            this.$_onSuggestionGeocoded(suggestionToGeocode, gmaps)
           } else {
-            this.onServiceError(status)
+            this.$_onServiceError(status)
           }
         })
       }
@@ -288,7 +291,7 @@ export default {
      * Emit when API status is not OK
      * @private
      */
-    onServiceError({ status }) {
+    $_onServiceError({ status }) {
       /**
        * Fired when Google Places API fails.
        * @param {Object} payload.status - The status returned.
@@ -299,7 +302,7 @@ export default {
      * Reshape a geocoded suggestion and emits result.
      * @private
      */
-    onSuggestionGeocoded(suggestionToGeocode, gmaps) {
+    $_onSuggestionGeocoded(suggestionToGeocode, gmaps) {
       const location = (gmaps.geometry || {}).location
       const suggestion = {
         ...suggestionToGeocode,
@@ -320,14 +323,14 @@ export default {
        * Contains strings for `streetAddress1`, `streetAddress2`, `region`, `city`, `postalCode`, `countryName`, and `countryIso2`.
        * Any of these properties could be undefined if the suggestion doesn't find enough information. `region` format depends on the country.
        */
-      this.$emit('geocoded', this.extendGeocodedSuggestion(suggestion))
+      this.$emit('geocoded', this.$_extendGeocodedSuggestion(suggestion))
     },
     /**
      * Extends the information of a geocoded suggestion by parsing
      * it and adding extra properties useful for shipping addresses.
      * @private
      */
-    extendGeocodedSuggestion(suggestion) {
+    $_extendGeocodedSuggestion(suggestion) {
       // Provide address_comopnents in a more handy format
       const map = (suggestion.gmaps.address_components || []).reduce(
         (acc1, comp) => ({

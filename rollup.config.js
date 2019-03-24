@@ -7,6 +7,12 @@ const baseConfig = {
   plugins: [buble({ objectAssign: true })],
 }
 
+const mangle = {
+  properties: {
+    regex: /^\$_/,
+  },
+}
+
 // UMD/IIFE shared settings: externals and output.globals
 // Refer to https://rollupjs.org/guide/en#output-globals for details
 const external = [
@@ -31,6 +37,7 @@ const buildFormats = [
     plugins: [
       ...baseConfig.plugins,
       terser({
+        mangle,
         output: {
           ecma: 6,
         },
@@ -52,6 +59,7 @@ const buildFormats = [
     plugins: [
       ...baseConfig.plugins,
       terser({
+        mangle,
         output: {
           ecma: 6,
         },
@@ -73,6 +81,7 @@ const buildFormats = [
     plugins: [
       ...baseConfig.plugins,
       terser({
+        mangle,
         output: {
           ecma: 5,
         },
