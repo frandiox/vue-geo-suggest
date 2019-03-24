@@ -23,6 +23,23 @@ Apart from that, an API key is necessary for using Google Places API. From the [
 
 Generate an API key and provide it to `loadGmaps` utility.
 
+The component and utilities can be imported directly:
+
+```
+import { GeoSuggest, loadGmaps } from 'vue-geo-suggest'
+
+loadGmaps('my-api-key)
+Vue.component(GeoSuggest.name, GeoSuggest) // Or register locally where needed
+```
+
+Or used as a plugin:
+
+```
+import GeoSuggest from 'vue-geo-suggest'
+
+Vue.use(GeoSuggest, { apiKey: 'my-api-key' })
+```
+
 ## Usage
 
 ```HTML
@@ -60,7 +77,7 @@ export default {
     // Load API dependencies globally. This can be called any time
     // before using GeoSuggest component.
     // i.e. in `main.js` or directly in the view where is necessary.
-    loadGmaps(process.env.VUE_APP_GCP_PLACES_API_KEY)
+    loadGmaps('my-api-key)
   },
 }
 ```
@@ -139,7 +156,7 @@ Example with **Vuetify**:
 - `place-detail-fields` **_Array_** (_optional_)
 
   List of [fields](https://developers.google.com/maps/documentation/javascript/reference/places-service#PlaceDetailsRequest.fields)
-  that should be returned by Google Places API. Useful to limited the size of the response and [optimize billing](https://developers.google.com/maps/billing/understanding-cost-of-use#data-skus).
+  that should be returned by Google Places API. Useful to reduce the size of the response and [optimize billing](https://developers.google.com/maps/billing/understanding-cost-of-use#data-skus).
   All the fields are returned by default.
 
 - `google-maps` **_Object_** (_optional_)

@@ -84,7 +84,7 @@ export default {
     },
     /**
      * List of [fields](https://developers.google.com/maps/documentation/javascript/reference/places-service#PlaceDetailsRequest.fields)
-     * that should be returned by Google Places API. Useful to limited the size of the response and [optimize billing](https://developers.google.com/maps/billing/understanding-cost-of-use#data-skus).
+     * that should be returned by Google Places API. Useful to reduce the size of the response and [optimize billing](https://developers.google.com/maps/billing/understanding-cost-of-use#data-skus).
      * All the fields are returned by default.
      */
     placeDetailFields: {
