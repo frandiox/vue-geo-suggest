@@ -4,16 +4,50 @@
   "description": "Renderless Vue component for finding addresses using Google Places API",
   "author": "Fran Dios <me@frandiox.com>",
   "license": "MIT",
-  "main": "dist/geo-suggest.umd.js",
-  "module": "dist/geo-suggest.common.min.js",
+  "main": "dist/vue-geo-suggest.umd.js",
+  "module": "dist/vue-geo-suggest.esm.js",
+  "unpkg": "dist/vue-geo-suggest.min.js",
+  "browser": {
+    "./sfc": "src/geo-suggest.js",
+    "./load": "src/load-gmaps.js"
+  },
   "scripts": {
     "dev": "vue-cli-service serve ./example/main.js --open --port 8030",
-    "build": "vue-cli-service build --name geoSuggest --entry ./src/index.js --target lib",
+    "build": "rollup -c",
     "lint": "vue-cli-service lint",
     "doc:build": "vuedoc.md --section API --output ./README.md ./src/geo-suggest.js",
     "prepublishOnly": "npm run lint && npm run build && npm run doc:build",
     "test:unit": "vue-cli-service test:unit"
   },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "vue-cli-service lint",
+      "git add"
+    ],
+    "*.vue": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  },
+  "keywords": [
+    "vue",
+    "component",
+    "gmaps",
+    "maps",
+    "google",
+    "places",
+    "geosuggest",
+    "suggest",
+    "vuetify"
+  ],
+  "files": [
+    "dist/*.map",
+    "dist/*.js",
+    "src/*"
+  ],
   "devDependencies": {
     "@vue/cli-plugin-babel": "3.5.x",
     "@vue/cli-plugin-eslint": "3.5.x",
@@ -29,40 +63,13 @@
     "eslint-plugin-vue": "5.2.x",
     "lint-staged": "8.1.x",
     "lodash.debounce": "4.0.x",
-    "material-design-icons-iconfont": "^4.0.5",
+    "material-design-icons-iconfont": "4.x",
+    "rollup": "1.x",
+    "rollup-plugin-buble": "0.x",
+    "rollup-plugin-terser": "4.x",
     "vue": "2.6.x",
     "vue-cli-plugin-component": "1.10.x",
     "vue-template-compiler": "2.6.x",
     "vuetify": "1.5.x"
-  },
-  "files": [
-    "dist/*.css",
-    "dist/*.map",
-    "dist/*.js",
-    "src/*"
-  ],
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "keywords": [
-    "vue",
-    "component",
-    "gmaps",
-    "maps",
-    "google",
-    "places",
-    "geosuggest",
-    "suggest",
-    "vuetify"
-  ],
-  "lint-staged": {
-    "*.js": [
-      "vue-cli-service lint",
-      "git add"
-    ],
-    "*.vue": [
-      "vue-cli-service lint",
-      "git add"
-    ]
   }
 }
