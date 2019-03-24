@@ -8,7 +8,7 @@
   "module": "dist/geo-suggest.common.min.js",
   "scripts": {
     "dev": "vue-cli-service serve ./example/main.js --open --port 8030",
-    "build": "vue-cli-service build --name vue-geo-suggest --entry ./src/index.js --target lib",
+    "build": "vue-cli-service build --name geoSuggest --entry ./src/index.js --target lib",
     "lint": "vue-cli-service lint",
     "doc:build": "vuedoc.md --section API --output ./README.md ./src/geo-suggest.vue",
     "prepublishOnly": "npm run lint && npm run build && npm run doc:build",
@@ -52,7 +52,8 @@
     "google",
     "places",
     "geosuggest",
-    "suggest"
+    "suggest",
+    "vuetify"
   ],
   "lint-staged": {
     "*.js": [

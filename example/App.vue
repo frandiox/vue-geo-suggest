@@ -2,18 +2,18 @@
   <VApp id="app">
     <div class="wrapper">
       <GeoSuggest
-        v-slot="{ suggests, loading }"
+        v-slot="{ suggestions, loading }"
         :debounce="debounce"
         :search="searchInput"
-        :suggest="selectedSuggest || null"
+        :suggestion="selectedSuggestion || null"
         @geocoded="address = { ...$event.normalizedAddress }"
         @service-error="searchInput = ''"
       >
         <VCombobox
-          v-model="selectedSuggest"
+          v-model="selectedSuggestion"
           :search-input.sync="searchInput"
           :loading="loading"
-          :items="suggests"
+          :items="suggestions"
           item-text="description"
           label="Find my address"
           no-filter
@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       debounce: fn => debounce(fn, 200),
-      selectedSuggest: null,
+      selectedSuggestion: null,
       searchInput: '',
       address: {},
     }

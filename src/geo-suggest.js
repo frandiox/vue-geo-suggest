@@ -11,7 +11,7 @@ export default {
       type: String,
       default: undefined,
     },
-    suggest: {
+    suggestion: {
       type: Object,
       default: undefined,
     },
@@ -43,11 +43,11 @@ export default {
       type: Array,
       default: undefined,
     },
-    getSuggestLabel: {
+    getSuggestionLabel: {
       type: Function,
       default: undefined,
     },
-    skipSuggest: {
+    skipSuggestion: {
       type: Function,
       default: undefined,
     },
@@ -64,23 +64,23 @@ export default {
       placesService: null,
       sessionToken: null,
       geocoder: null,
-      suggests: [],
+      suggestions: [],
     }
   },
   computed: {
-    debouncedSearchSuggests() {
+    debouncedSearchSuggestions() {
       return this.debounce
-        ? this.debounce(this.searchSuggests)
-        : this.searchSuggests
+        ? this.debounce(this.searchSuggestions)
+        : this.searchSuggestions
     },
   },
   watch: {
     search() {
-      this.debouncedSearchSuggests()
+      this.debouncedSearchSuggestions()
     },
-    suggest(value) {
+    suggestion(value) {
       if (value) {
-        this.geocodeSuggest(value)
+        this.geocodeSuggestion(value)
       }
     },
   },
@@ -106,10 +106,10 @@ export default {
 
       return true
     },
-    searchSuggests() {
+    searchSuggestions() {
       if (!this.search) {
-        // Empty suggest list
-        this.updateSuggests()
+        // Empty suggestion list
+        this.updateSuggestions()
         return
       }
 
@@ -140,38 +140,40 @@ export default {
 
       this.loading = true
 
-      this.autocompleteService.getPlacePredictions(options, rawSuggests => {
+      this.autocompleteService.getPlacePredictions(options, rawSuggestions => {
         this.loading = false
-        this.updateSuggests(rawSuggests || [])
+        this.updateSuggestions(rawSuggestions || [])
       })
     },
-    updateSuggests(rawSuggests = []) {
-      this.suggests = rawSuggests.reduce((acc, suggest) => {
-        if (!this.skipSuggest || !this.skipSuggest(suggest)) {
+    updateSuggestions(rawSuggestions = []) {
+      this.suggestions = rawSuggestions.reduce((acc, suggestion) => {
+        if (!this.skipSuggestion || !this.skipSuggestion(suggestion)) {
           acc.push({
-            description: suggest.description,
             isFixture: false,
-            label: this.getSuggestLabel ? this.getSuggestLabel(suggest) : '',
-            matchedSubstrings: suggest.matched_substrings[0],
-            placeId: suggest.place_id,
+            placeId: suggestion.place_id,
+            description: suggestion.description,
+            matchedSubstrings: suggestion.matched_substrings[0],
+            label: this.getSuggestionLabel
+              ? this.getSuggestionLabel(suggestion)
+              : '',
           })
         }
 
         return acc
       }, [])
     },
-    geocodeSuggest(suggestToGeocode) {
+    geocodeSuggestion(suggestionToGeocode) {
       if (!this.geocoder) {
         return
       }
 
       if (
-        suggestToGeocode.placeId &&
-        !suggestToGeocode.isFixture &&
+        suggestionToGeocode.placeId &&
+        !suggestionToGeocode.isFixture &&
         this.placesService
       ) {
         const options = {
-          placeId: suggestToGeocode.placeId,
+          placeId: suggestionToGeocode.placeId,
           sessionToken: this.sessionToken,
           fields: this.placeDetailFields,
         }
@@ -179,14 +181,14 @@ export default {
         this.placesService.getDetails(options, (gmaps, status) => {
           if (status === this.gmaps.places.PlacesServiceStatus.OK) {
             this.sessionToken = new this.gmaps.places.AutocompleteSessionToken()
-            this.onSuggestGeocoded(suggestToGeocode, gmaps)
+            this.onSuggestionGeocoded(suggestionToGeocode, gmaps)
           } else {
             this.$emit('service-error', { status })
           }
         })
       } else {
         const options = {
-          address: suggestToGeocode.label,
+          address: suggestionToGeocode.label,
           bounds: this.bounds,
           location: this.location,
           componentRestrictions: this.country
@@ -196,15 +198,15 @@ export default {
 
         this.geocoder.geocode(options, ([gmaps], status) => {
           if (status === this.gmaps.GeocoderStatus.OK) {
-            this.onSuggestGeocoded(suggestToGeocode, gmaps)
+            this.onSuggestionGeocoded(suggestionToGeocode, gmaps)
           }
         })
       }
     },
-    onSuggestGeocoded(suggestToGeocode, gmaps) {
+    onSuggestionGeocoded(suggestionToGeocode, gmaps) {
       const location = (gmaps.geometry || {}).location
-      const suggest = {
-        ...suggestToGeocode,
+      const suggestion = {
+        ...suggestionToGeocode,
         gmaps,
         location: location && {
           lat: location.lat(),
@@ -212,11 +214,11 @@ export default {
         },
       }
 
-      this.$emit('geocoded', this.extendGeocodedSuggest(suggest))
+      this.$emit('geocoded', this.extendGeocodedSuggestion(suggestion))
     },
-    extendGeocodedSuggest(suggest) {
+    extendGeocodedSuggestion(suggestion) {
       // Provide address_comopnents in a more handy format
-      const map = (suggest.gmaps.address_components || []).reduce(
+      const map = (suggestion.gmaps.address_components || []).reduce(
         (acc1, comp) => ({
           ...acc1,
           ...comp.types.reduce(
@@ -240,19 +242,19 @@ export default {
       // Find street address
       let streetAddress2
       let streetAddress1 = extract(
-        suggest.gmaps.adr_address,
+        suggestion.gmaps.adr_address,
         /"street-address"\s*>(.+?)</i
       ).replace(`, ${locality.longName || 'NO MATCH'}`, '')
 
       if (streetAddress1) {
         streetAddress2 =
-          suggest.gmaps.name !== streetAddress1 ? suggest.gmaps.name : ''
+          suggestion.gmaps.name !== streetAddress1 ? suggestion.gmaps.name : ''
       } else {
-        streetAddress1 = suggest.gmaps.name
+        streetAddress1 = suggestion.gmaps.name
         if (
           map.route &&
           !['street_address', 'route'].some(type =>
-            (suggest.gmaps.types || []).includes(type)
+            (suggestion.gmaps.types || []).includes(type)
           )
         ) {
           // Smaller level than street (maybe public place), best effort guessing
@@ -265,7 +267,7 @@ export default {
 
       // Best effort building a "normalized" address
       const region =
-        extract(suggest.gmaps.adr_address, /"region"\s*>(.+?)</i) ||
+        extract(suggestion.gmaps.adr_address, /"region"\s*>(.+?)</i) ||
         locality.shortName ||
         aal1.shortName
 
@@ -280,20 +282,20 @@ export default {
       }
 
       return {
-        ...suggest,
+        ...suggestion,
         region,
         normalizedAddress,
         addressComponentMap: map,
-        formattedAddress: suggest.gmaps.formatted_address,
-        name: suggest.gmaps.name,
-        types: suggest.gmaps.types,
+        formattedAddress: suggestion.gmaps.formatted_address,
+        name: suggestion.gmaps.name,
+        types: suggestion.gmaps.types,
       }
     },
   },
   render() {
     return this.$scopedSlots.default({
       loading: this.loading,
-      suggests: this.suggests,
+      suggestions: this.suggestions,
     })
   },
 }

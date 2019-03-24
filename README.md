@@ -9,16 +9,16 @@
 ```HTML
 <GeoSuggest
   :search="searchInput"
-  :suggest="selectedSuggest"
-  @geocoded="geocoded = $event"
+  :suggestion="selectedSuggestion"
+  @geocoded="address = $event.normalizedAddress"
 >
-  <template v-slot="{ suggests, loading }">
+  <template v-slot="{ suggestions, loading }">
     <CustomSearchInput
       v-model="searchInput"
     />
     <CustomSuggestDropdown
-      v-model="selectedSuggest"
-      :items="suggests"
+      v-model="selectedSuggestion"
+      :items="suggestions"
       :loading="loading"
     />
   </template>
@@ -32,9 +32,9 @@ export default {
   components: { GeoSuggest },
   data() {
     return {
-      selectedSuggest: null, // Selected suggest from dropdown
+      selectedSuggestion: null, // Selected suggest from dropdown
       searchInput: '', // Search text
-      geocoded: null, // Information about the selected place
+      address: null, // Information about the selected place
     }
   },
   mounted() {
@@ -47,16 +47,16 @@ Example with Vuetify:
 
 ```HTML
 <GeoSuggest
-  v-slot="{ suggests, loading }"
+  v-slot="{ suggestions, loading }"
   :search="searchInput"
-  :suggest="selectedSuggest"
-  @geocoded="geocoded = $event"
+  :suggestion="selectedSuggestion"
+  @geocoded="address = $event.normalizedAddress"
 >
   <VCombobox
-    v-model="selectedSuggest"
+    v-model="selectedSuggestion"
     :search-input.sync="searchInput"
     :loading="loading"
-    :items="suggests"
+    :items="suggestions"
     item-text="description"
     no-filter
     clearable
