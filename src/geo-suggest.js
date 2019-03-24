@@ -33,14 +33,6 @@ export default {
       type: Object,
       required: false,
     },
-    getSuggestionLabel: {
-      type: Function,
-      required: false,
-    },
-    skipSuggestion: {
-      type: Function,
-      required: false,
-    },
     /**
      * Called whenever the `search` prop changes
      * with another function as a single parameter that performs the actual request.
@@ -230,21 +222,11 @@ export default {
      * @private
      */
     updateSuggestions(rawSuggestions = []) {
-      this.suggestions = rawSuggestions.reduce((acc, suggestion) => {
-        if (!this.skipSuggestion || !this.skipSuggestion(suggestion)) {
-          acc.push({
-            isFixture: false,
-            placeId: suggestion.place_id,
-            description: suggestion.description,
-            matchedSubstrings: suggestion.matched_substrings[0],
-            label: this.getSuggestionLabel
-              ? this.getSuggestionLabel(suggestion)
-              : '',
-          })
-        }
-
-        return acc
-      }, [])
+      this.suggestions = rawSuggestions.map(suggestion => ({
+        placeId: suggestion.place_id,
+        description: suggestion.description,
+        matchedSubstrings: suggestion.matched_substrings[0],
+      }))
 
       /**
        * Fired when a new list of suggestions is returned by the Google Places API.
@@ -261,11 +243,7 @@ export default {
         return
       }
 
-      if (
-        suggestionToGeocode.placeId &&
-        !suggestionToGeocode.isFixture &&
-        this.placesService
-      ) {
+      if (suggestionToGeocode.placeId && this.placesService) {
         const options = {
           placeId: suggestionToGeocode.placeId,
           sessionToken: this.sessionToken,
@@ -277,11 +255,7 @@ export default {
             this.sessionToken = new this.gmaps.places.AutocompleteSessionToken()
             this.onSuggestionGeocoded(suggestionToGeocode, gmaps)
           } else {
-            /**
-             * Fired when Google Places API fails.
-             * @param {Object} payload.status - The status returned.
-             */
-            this.$emit('error', { status })
+            this.onServiceError(status)
           }
         })
       } else {
@@ -297,9 +271,22 @@ export default {
         this.geocoder.geocode(options, ([gmaps], status) => {
           if (status === this.gmaps.GeocoderStatus.OK) {
             this.onSuggestionGeocoded(suggestionToGeocode, gmaps)
+          } else {
+            this.onServiceError(status)
           }
         })
       }
+    },
+    /**
+     * Emit when API status is not OK
+     * @private
+     */
+    onServiceError({ status }) {
+      /**
+       * Fired when Google Places API fails.
+       * @param {Object} payload.status - The status returned.
+       */
+      this.$emit('error', { status })
     },
     /**
      * Reshape a geocoded suggestion and emits result.

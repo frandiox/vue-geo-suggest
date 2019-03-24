@@ -87,10 +87,6 @@ Example with Vuetify:
   one of the elements inside the provided `suggestions` list.
   Contains `description`, `placeId`, and `matchedSubstrings`. 
 
-- `get-suggestion-label` ***Function*** (*optional*) 
-
-- `skip-suggestion` ***Function*** (*optional*) 
-
 - `debounce` ***Function*** (*optional*) 
 
   Called whenever the `search` prop changes
