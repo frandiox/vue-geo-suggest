@@ -278,7 +278,7 @@ export default {
             this.$_sessionToken = new this.$_gmaps.places.AutocompleteSessionToken()
             this.$_onSuggestionGeocoded(suggestionToGeocode, gmaps)
           } else {
-            this.$_onServiceError(status)
+            this.$_onServiceError({ status })
           }
         })
       } else {
@@ -295,7 +295,7 @@ export default {
           if (status === this.$_gmaps.GeocoderStatus.OK) {
             this.$_onSuggestionGeocoded(suggestionToGeocode, gmaps)
           } else {
-            this.$_onServiceError(status)
+            this.$_onServiceError({ status })
           }
         })
       }
