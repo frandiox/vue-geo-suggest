@@ -218,7 +218,7 @@ export default {
         radius: this.radius,
         bounds: this.bounds,
         types: this.types,
-        componentsRestrictions: this.country
+        componentRestrictions: this.country
           ? { country: this.country }
           : undefined,
       }
