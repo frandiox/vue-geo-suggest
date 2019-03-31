@@ -52,6 +52,13 @@ export default {
       required: false,
     },
     /**
+     * Filter suggestions by type. See [types supported](https://developers.google.com/maps/documentation/javascript/reference/places-autocomplete-service#AutocompletionRequest.types).
+     */
+    types: {
+      type: Array,
+      required: false,
+    },
+    /**
      * Allows localizing the resulting suggestions.
      * See [`google.maps.LatLng`](https://developers.google.com/maps/documentation/javascript/reference#LatLng).
      */
