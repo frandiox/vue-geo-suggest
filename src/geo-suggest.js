@@ -249,7 +249,7 @@ export default {
      * @private
      */
     $_geocodeSuggestion(suggestionToGeocode) {
-      if (!this.$_geocoder) {
+      if (!this.$_geocoder && !this.$_init()) {
         return
       }
 
