@@ -1,6 +1,6 @@
 {
   "name": "vue-geo-suggest",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Renderless Vue component for finding addresses using Google Places API",
   "author": "Fran Dios <me@frandiox.com>",
   "license": "MIT",
