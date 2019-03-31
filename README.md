@@ -4,9 +4,11 @@
 [![Npm version](https://img.shields.io/npm/v/vue-geo-suggest.svg?maxAge=2592000)](https://www.npmjs.com/package/vue-geo-suggest)
 [![MIT License](https://img.shields.io/github/license/frandiox/vue-geo-suggest.svg)](https://github.com/frandiox/vue-geo-suggest/blob/master/LICENSE)
 
-A small renderless [Vue](https://vuejs.org) for finding addresses using [Google Places API](https://developers.google.com/places/web-service/intro). The component simply provides a list of suggestions and place information as slot props in order to support custom UI. It is easily pluggable to [Vuetify](https://vuetifyjs.com) and other UI components.
+A small, renderless [Vue](https://vuejs.org) component for finding addresses using [Google Places API](https://developers.google.com/places/web-service/intro). The component simply provides a list of suggestions and place information as slot props in order to support custom UI and reduce size (2K gzipped). It is easily pluggable to [Vuetify](https://vuetifyjs.com) and other UI components.
 
-This project was originally based on [`react-geosuggest`](https://github.com/ubilabs/react-geosuggest).
+<p align="center"><img src="./sample.gif"></p>
+
+This project was originally based on [`react-geosuggest`](https://github.com/ubilabs/react-geosuggest) and [`vue-google-maps`](https://github.com/xkjyeah/vue-google-maps).
 
 ## Installation
 
@@ -15,7 +17,7 @@ npm install vue-geo-suggest
 yarn add vue-geo-suggest
 ```
 
-Apart from that, an API key is necessary for using Google Places API. From the [Google Developer Console](https://console.developers.google.com)'s API Manager Dashboard, enable the following APIs:
+Apart from that, an API key is necessary for using Google Places. From the [Google Developer Console](https://console.developers.google.com)'s API Manager Dashboard, enable the following APIs:
 
 - [Google Maps Geocoding API](https://developers.google.com/maps/documentation/geocoding/start).
 - [Google Places API Web Service](https://developers.google.com/places/web-service/).
