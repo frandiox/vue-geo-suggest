@@ -102,7 +102,7 @@ export default {
      * Google Maps object to use in case it is not loaded globally.
      */
     googleMaps: {
-      type: Object,
+      type: [Object, Function],
       required: false,
     },
   },
