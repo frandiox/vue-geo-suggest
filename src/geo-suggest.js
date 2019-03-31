@@ -413,9 +413,12 @@ export default {
     },
   },
   render() {
-    return this.$scopedSlots.default({
-      loading: this.loading,
-      suggestions: this.suggestions,
-    })
+    return (
+      this.$scopedSlots.default &&
+      this.$scopedSlots.default({
+        loading: this.loading,
+        suggestions: this.suggestions,
+      })
+    )
   },
 }
