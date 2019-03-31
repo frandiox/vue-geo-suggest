@@ -1,6 +1,6 @@
 {
   "name": "vue-geo-suggest",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Renderless Vue component for finding addresses using Google Places API",
   "author": "Fran Dios <me@frandiox.com>",
   "license": "MIT",
@@ -19,6 +19,14 @@
     "test:unit": "vue-cli-service test:unit",
     "prepublishOnly": "npm run lint && npm run build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frandiox/vue-geo-suggest.git"
+  },
+  "bugs": {
+    "url": "https://github.com/frandiox/vue-geo-suggest/issues"
+  },
+  "homepage": "https://github.com/frandiox/vue-geo-suggest#readme",
   "gitHooks": {
     "pre-commit": "lint-staged"
   },
