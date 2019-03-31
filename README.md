@@ -12,7 +12,7 @@ This project was originally based on [`react-geosuggest`](https://github.com/ubi
 
 ## Installation
 
-```
+```sh
 npm install vue-geo-suggest
 yarn add vue-geo-suggest
 ```
@@ -27,7 +27,7 @@ Generate an API key and provide it to `loadGmaps` utility.
 
 The component and utilities can be imported directly:
 
-```
+```js
 import { GeoSuggest, loadGmaps } from 'vue-geo-suggest'
 
 loadGmaps('my-api-key)
@@ -36,7 +36,7 @@ Vue.component(GeoSuggest.name, GeoSuggest) // Or register locally where needed
 
 Or used as a plugin:
 
-```
+```js
 import GeoSuggest from 'vue-geo-suggest'
 
 Vue.use(GeoSuggest, { apiKey: 'my-api-key' })
@@ -79,7 +79,7 @@ export default {
     // Load API dependencies globally. This can be called any time
     // before using GeoSuggest component.
     // i.e. in `main.js` or directly in the view where is necessary.
-    loadGmaps('my-api-key)
+    loadGmaps('my-api-key')
   },
 }
 ```
@@ -176,15 +176,11 @@ Example with **Vuetify**:
   `true` when a request to Google Places API is pending.
   This is provided in the default scoped slot.
 
-**initial value:** `false`
-
 - `suggestions`
 
   List of suggestions returned by Google Places API based on `search`.
   Each element is an object containing `description`, `placeId` and `matchedSubstrings`.
   This is provided in the default scoped slot.
-
-**initial value:** `[object Object]`
 
 #### events
 
