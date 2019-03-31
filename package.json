@@ -25,11 +25,13 @@
   "lint-staged": {
     "*.js": [
       "vue-cli-service lint",
-      "git add"
+      "git add",
+      "yarn test:unit:file"
     ],
     "*.vue": [
       "vue-cli-service lint",
-      "git add"
+      "git add",
+      "yarn test:unit:file"
     ]
   },
   "keywords": [

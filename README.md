@@ -136,6 +136,10 @@ Example with **Vuetify**:
   [`lodash.debounce`](https://www.npmjs.com/package/lodash.debounce):
   `:debounce="fn => lodashDebounce(fn, msDelay)"`
 
+- `types` **_Array_** (_optional_)
+
+  Filter suggestions by type. See [types supported](https://developers.google.com/maps/documentation/javascript/reference/places-autocomplete-service#AutocompletionRequest.types).
+
 - `location` **_Object_** (_optional_)
 
   Allows localizing the resulting suggestions.
@@ -161,7 +165,7 @@ Example with **Vuetify**:
   that should be returned by Google Places API. Useful to reduce the size of the response and [optimize billing](https://developers.google.com/maps/billing/understanding-cost-of-use#data-skus).
   All the fields are returned by default.
 
-- `google-maps` **_Object_** (_optional_)
+- `google-maps` **_Object|Function_** (_optional_)
 
   Google Maps object to use in case it is not loaded globally.
 
