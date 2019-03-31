@@ -145,13 +145,19 @@ export default {
     },
   },
   watch: {
-    search() {
-      this.$_debouncedSearchSuggestions()
+    search: {
+      immediate: true,
+      handler() {
+        this.$_debouncedSearchSuggestions()
+      },
     },
-    suggestion(value) {
-      if (value && typeof value === 'object') {
-        this.$_geocodeSuggestion(value)
-      }
+    suggestion: {
+      immediate: true,
+      handler(value) {
+        if (value && typeof value === 'object') {
+          this.$_geocodeSuggestion(value)
+        }
+      },
     },
   },
   methods: {
