@@ -6,9 +6,9 @@
 [![Build Status](https://travis-ci.com/frandiox/vue-geo-suggest.svg?branch=master)](https://travis-ci.com/frandiox/vue-geo-suggest)
 [![Coverage Status](https://coveralls.io/repos/github/frandiox/vue-geo-suggest/badge.svg?branch=master)](https://coveralls.io/github/frandiox/vue-geo-suggest?branch=master)
 
-A small, renderless [Vue](https://vuejs.org) component for finding addresses using [Google Places API](https://developers.google.com/places/web-service/intro). The component simply provides a list of suggestions and place information as slot props in order to support custom UI and reduce size (2K gzipped). It is easily pluggable to [Vuetify](https://vuetifyjs.com) and other UI components.
-
 <p align="center"><img src="./sample.gif"></p>
+
+A small, renderless [Vue](https://vuejs.org) component for finding addresses using [Google Places API](https://developers.google.com/places/web-service/intro). The component simply provides a list of suggestions and place information as slot props in order to support custom UI and reduce size (2K gzipped). It is easily pluggable to [Vuetify](https://vuetifyjs.com) and other UI components.
 
 This project was originally based on [`react-geosuggest`](https://github.com/ubilabs/react-geosuggest) and [`vue-google-maps`](https://github.com/xkjyeah/vue-google-maps).
 
@@ -32,7 +32,7 @@ The component and utilities can be imported directly:
 ```js
 import { GeoSuggest, loadGmaps } from 'vue-geo-suggest'
 
-loadGmaps('my-api-key)
+loadGmaps('my-api-key')
 Vue.component(GeoSuggest.name, GeoSuggest) // Or register locally where needed
 ```
 
