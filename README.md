@@ -3,6 +3,8 @@
 [![GitHub open issues](https://img.shields.io/github/issues/frandiox/vue-geo-suggest.svg?maxAge=2592000)](https://github.com/frandiox/vue-geo-suggest/issues)
 [![Npm version](https://img.shields.io/npm/v/vue-geo-suggest.svg?maxAge=2592000)](https://www.npmjs.com/package/vue-geo-suggest)
 [![MIT License](https://img.shields.io/github/license/frandiox/vue-geo-suggest.svg)](https://github.com/frandiox/vue-geo-suggest/blob/master/LICENSE)
+[![Build Status](https://travis-ci.com/frandiox/vue-geo-suggest.svg?branch=master)](https://travis-ci.com/frandiox/vue-geo-suggest)
+[![Coverage Status](https://coveralls.io/repos/github/frandiox/vue-geo-suggest/badge.svg?branch=master)](https://coveralls.io/github/frandiox/vue-geo-suggest?branch=master)
 
 A small, renderless [Vue](https://vuejs.org) component for finding addresses using [Google Places API](https://developers.google.com/places/web-service/intro). The component simply provides a list of suggestions and place information as slot props in order to support custom UI and reduce size (2K gzipped). It is easily pluggable to [Vuetify](https://vuetifyjs.com) and other UI components.
 
