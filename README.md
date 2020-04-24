@@ -241,7 +241,7 @@ export default {
 
   - `payload.description` **String** - Same description string as in the `suggestions` list.
   - `payload.location` **Object** - Latitude (`lat`) and longitude (`lng`).
-  - `payload.gmaps` **Object** - Complete response for this suggestion. See [its structure here](https://developers.google.com/maps/documentation/javascript/reference#GeocoderResult).
+  - `payload.gmaps` **Object** - Complete response for this suggestion. See [its structure here](https://developers.google.com/maps/documentation/javascript/reference/places-service#PlaceResult).
   - `payload.addressComponentsMap` **Object** - Handy structure that summarizes `gmaps` components.
   - `payload.normalizedAddress` **Object** - Extended information based on the API result useful for shipping addresses.
 
