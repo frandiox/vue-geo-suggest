@@ -80,6 +80,7 @@
     "material-design-icons-iconfont": "4.x",
     "rollup": "1.x",
     "rollup-plugin-buble": "0.x",
+    "rollup-plugin-nodent": "^0.2.2",
     "rollup-plugin-terser": "4.x",
     "vue": "2.6.x",
     "vue-template-compiler": "2.6.x",

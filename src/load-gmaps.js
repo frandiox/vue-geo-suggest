@@ -10,11 +10,12 @@
  * @see {@link https://github.com/xkjyeah/vue-google-maps}
  * @access private
  */
-export default function loadGmaps(apiKey, version) {
+
+export default async function loadGmaps(apiKey, version) {
   try {
     // If not within browser context, do not continue processing.
     if (typeof window === 'undefined' || typeof document === 'undefined') {
-      return
+      return false
     }
 
     if (
@@ -22,7 +23,7 @@ export default function loadGmaps(apiKey, version) {
       typeof window.google.maps === 'object'
     ) {
       if (typeof window.google.maps.places === 'object') {
-        return // google is already loaded, don't try to load it again to prevent errors
+        return true // google is already loaded, don't try to load it again to prevent errors
       }
 
       throw new Error(
@@ -33,7 +34,9 @@ export default function loadGmaps(apiKey, version) {
     window.initVGAMaps =
       window.initVGAMaps ||
       function() {
-        this.loaded = true
+        clearTimeout(window.initVGAMaps.timeoutId)
+        window.initVGAMaps.loaded = true
+        window.initVGAMaps.resolveFunc(true)
       }
 
     if (!window.initVGAMaps.loaded) {
@@ -73,11 +76,19 @@ export default function loadGmaps(apiKey, version) {
       googleMapScript.setAttribute('defer', '')
 
       document.body.append(googleMapScript)
+      return new Promise((resolve, reject) => {
+        window.initVGAMaps.resolveFunc = resolve
+        window.initVGAMaps.timeoutId = setTimeout(() => {
+          reject(
+            new Error('loadGmaps error: Google Maps loading was timed out')
+          )
+        }, 5000)
+      })
     } else {
-      throw new Error('LoadGmaps loaded multiple times.')
+      return true
     }
   } catch (err) {
-    err.message = 'LoadGmaps load error:' + err.message
+    err.message = 'loadGmaps load error:' + err.message
     throw err
   }
 }

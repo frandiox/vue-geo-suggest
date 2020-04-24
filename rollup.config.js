@@ -1,10 +1,14 @@
 // rollup.config.js
 import buble from 'rollup-plugin-buble'
 import { terser } from 'rollup-plugin-terser'
+import nodent from 'rollup-plugin-nodent'
 
 const baseConfig = {
   input: 'src/index.js',
-  plugins: [buble({ objectAssign: true })],
+  plugins: [
+    nodent({ promises: true, noRuntime: true }),
+    buble({ objectAssign: true }),
+  ],
 }
 
 const mangle = {

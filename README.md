@@ -25,7 +25,7 @@ Apart from that, an API key is necessary for using Google Places. From the [Goog
 - [Google Places API Web Service](https://developers.google.com/places/web-service/).
 - [Google Maps Javascript API](https://developers.google.com/maps/documentation/javascript/).
 
-Generate an API key and provide it to `loadGmaps` utility.
+Generate an API key and provide it to `loadGmaps` utility. The `loadGmaps` returns promise (fulfilled with `true` as loaded successfully and `false` as not loaded) so this way you can determine when the download has finished.
 
 The component and utilities can be imported directly:
 
@@ -34,6 +34,14 @@ import { GeoSuggest, loadGmaps } from 'vue-geo-suggest'
 
 loadGmaps('my-api-key')
 Vue.component(GeoSuggest.name, GeoSuggest) // Or register locally where needed
+```
+
+```js
+import { GeoSuggest, loadGmaps } from 'vue-geo-suggest'
+
+(async () => {
+  await loadGmaps('my-api-key') && Vue.component(GeoSuggest.name, GeoSuggest) // Or register locally where needed
+})()
 ```
 
 Or used as a plugin:
@@ -86,10 +94,11 @@ export default {
 }
 ```
 
-Example with **Vuetify**:
+Example with **Vuetify** and `loadGmaps`'s promise:
 
 ```HTML
 <GeoSuggest
+  v-if="gsLoaded"
   v-slot="{ suggestions, loading }"
   :search="searchInput"
   :suggestion="selectedSuggestion"
@@ -105,6 +114,28 @@ Example with **Vuetify**:
     clearable
   />
 </GeoSuggest>
+```
+
+```javascript
+import { GeoSuggest, loadGmaps } from 'vue-geo-suggest'
+
+export default {
+  components: { GeoSuggest },
+  data() {
+    return {
+      searchInput: '', // Search text
+      selectedSuggestion: null, // Selected suggest from dropdown
+      address: null, // Information about the selected place
+      gsLoaded: false,
+    }
+  },
+  async mounted() {
+    // Load API dependencies globally. This can be called any time
+    // before using GeoSuggest component.
+    // i.e. in `main.js` or directly in the view where is necessary.
+    await loadGmaps('my-api-key') && (this.gsLoaded = true)
+  },
+}
 ```
 
 ## API
@@ -210,7 +241,7 @@ Example with **Vuetify**:
 
   - `payload.description` **String** - Same description string as in the `suggestions` list.
   - `payload.location` **Object** - Latitude (`lat`) and longitude (`lng`).
-  - `payload.gmaps` **Object** - Complete response for this suggestion. See [its structure here](https://developers.google.com/maps/documentation/javascript/reference#GeocoderResult).
+  - `payload.gmaps` **Object** - Complete response for this suggestion. See [its structure here](https://developers.google.com/maps/documentation/javascript/reference/places-service#PlaceResult).
   - `payload.addressComponentsMap` **Object** - Handy structure that summarizes `gmaps` components.
   - `payload.normalizedAddress` **Object** - Extended information based on the API result useful for shipping addresses.
 
