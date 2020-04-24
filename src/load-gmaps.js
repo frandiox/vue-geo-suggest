@@ -33,7 +33,7 @@ export default function loadGmaps(apiKey, version) {
     window.initVGAMaps =
       window.initVGAMaps ||
       function() {
-        this.loaded = true
+        window.initVGAMaps.loaded = true
       }
 
     if (!window.initVGAMaps.loaded) {
