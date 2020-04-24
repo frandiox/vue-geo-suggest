@@ -133,7 +133,7 @@ export default {
     // Load API dependencies globally. This can be called any time
     // before using GeoSuggest component.
     // i.e. in `main.js` or directly in the view where is necessary.
-    await loadGmaps('my-api-key') && this.gsLoaded = true
+    await loadGmaps('my-api-key') && (this.gsLoaded = true)
   },
 }
 ```
