@@ -78,7 +78,7 @@ export default async function loadGmaps(apiKey, version) {
       document.body.append(googleMapScript)
       return new Promise((resolve, reject) => {
         window.initVGAMaps.resolveFunc = resolve
-        window.initVGAMaps.timeoutId = setTimeout( () => { reject('loadGmaps error: Google Maps loading was timed out')}, 5000)
+        window.initVGAMaps.timeoutId = setTimeout( () => { reject(new Error('loadGmaps error: Google Maps loading was timed out'))}, 5000)
       })
     } else {
       return true
